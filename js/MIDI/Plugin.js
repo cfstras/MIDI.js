@@ -531,8 +531,9 @@ if (window.Audio) (function () {
 				if (conf.callback) conf.callback();
 			}, 25);
 		};
-		soundManager.onerror = function () {
-
+		soundManager.onerror = function (err) {
+			console.error("SoundManager2 error:", err);
+			if (conf.callback) conf.callback(err);
 		};
 		for (var key in MIDI.keyToNote) {
 			noteReverse[MIDI.keyToNote[key]] = key;
