@@ -182,16 +182,14 @@ if (window.AudioContext || window.webkitAudioContext) (function () {
 		var source = ctx.createBufferSource();
 		sources[channel + "" + note] = source;
 		source.buffer = audioBuffers[instrument + "" + note];
-		source.connect(ctx.destination);
-		///
 		if (ctx.createGain) { // firefox
 			source.gainNode = ctx.createGain();
 		} else { // chrome
 			source.gainNode = ctx.createGainNode();
 		}
-		var value = (velocity / 127) * (masterVolume / 127) * 2 - 1;
+		var value = (velocity / 127) * (masterVolume / 127);
 		source.gainNode.connect(ctx.destination);
-		source.gainNode.gain.value = Math.max(-1, value);
+		source.gainNode.gain.value = Math.max(0, Math.min(value, 1));
 		source.connect(source.gainNode);
 		if (source.noteOn) { // old api
 			source.noteOn(delay || 0);
